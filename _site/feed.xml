@@ -5,8 +5,8 @@
     <description>Miroslav Batchkarov&#39;s webspace</description>
     <link>http://mbatchkarov.github.io/</link>
     <atom:link href="http://mbatchkarov.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 14 Jul 2014 17:53:44 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Jul 2014 17:53:44 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Jul 2014 21:01:48 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Jul 2014 21:01:48 +0100</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
@@ -142,82 +142,94 @@ example I was recently working on.&lt;/p&gt;
 simple but seems to take a lot of time. To profile it line by line, I ran the&lt;br /&gt;
 following command in IPython&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;# get some data to run the function with
-import pickle
-b = pickle.load(open(&#39;../statistics/stats-exp0-0-cv0-ev.MultinomialNB.pkl&#39;))
-X = b.tr_matrix
-y = b.y_tr
-# do the actual profiling
-%lprun -f calculate_log_odds calculate_log_odds(X, y)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#777&quot;&gt;# get some data to run the function with&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color:#B44;font-weight:bold&quot;&gt;pickle&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;b = pickle.load(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;open&lt;/span&gt;(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;../statistics/stats-exp0-0-cv0-ev.MultinomialNB.pkl&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;&#39;&lt;/span&gt;&lt;/span&gt;))
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;X = b.tr_matrix
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;y = b.y_tr
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#777&quot;&gt;# do the actual profiling&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;%lprun -f calculate_log_odds calculate_log_odds(X, y)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The output looks like this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;Total time: 2.36018 s
-
-Line #      Hits         Time  Per Hit   % Time  Line Contents
-==============================================================
-     3                                           def calculate_log_odds(X, y):
-     4                                               # todo this is quite slow
-     5         1           14     14.0      0.0      log_odds = np.empty(X.shape[1])
-     6         1           45     45.0      0.0      class0_indices = (y == sorted(set(y))[0])
-     7      2466         1632      0.7      0.1      for idx in range(X.shape[1]):
-     8      2465       864021    350.5     36.6          all_counts = X[:, idx].A.ravel()  # document counts of this feature
-     9      2465      1378602    559.3     58.4          total_counts = sum(all_counts &amp;gt; 0)  # how many docs the feature occurs in
-    10      2465        79524     32.3      3.4          count_in_class0 = sum(all_counts[class0_indices])  # how many of them are class 0
-    11      2465         3871      1.6      0.2          p = float(count_in_class0) / total_counts;
-    12      2465        29874     12.1      1.3          log_odds_this_feature = np.log(p) - np.log(1 - p)
-    13      2465         2595      1.1      0.1          log_odds[idx] = log_odds_this_feature
-    14         1            0      0.0      0.0      return log_odds
-
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Total time: &lt;span style=&quot;color:#60E&quot;&gt;2.36018&lt;/span&gt; s
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;Line &lt;span style=&quot;color:#777&quot;&gt;#      Hits         Time  Per Hit   % Time  Line Contents&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;==============================================================
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;3&lt;/span&gt;                                           &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;calculate_log_odds&lt;/span&gt;(X, y):
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;4&lt;/span&gt;                                               &lt;span style=&quot;color:#777&quot;&gt;# todo this is quite slow&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;5&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;14&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;14.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      log_odds = np.empty(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;])
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;6&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;45&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;45.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      class0_indices = (y == &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;sorted&lt;/span&gt;(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;set&lt;/span&gt;(y))[&lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;])
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;7&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2466&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1632&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.7&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.1&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; idx &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;in&lt;/span&gt; &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;range&lt;/span&gt;(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;]):
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;8&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;       &lt;span style=&quot;color:#00D&quot;&gt;864021&lt;/span&gt;    &lt;span style=&quot;color:#60E&quot;&gt;350.5&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;36.6&lt;/span&gt;          all_counts = X[:, idx].A.ravel()  &lt;span style=&quot;color:#777&quot;&gt;# document counts of this feature&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;     &lt;span style=&quot;color:#00D&quot;&gt;9&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;1378602&lt;/span&gt;    &lt;span style=&quot;color:#60E&quot;&gt;559.3&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;58.4&lt;/span&gt;          total_counts = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;sum&lt;/span&gt;(all_counts &amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;)  &lt;span style=&quot;color:#777&quot;&gt;# how many docs the feature occurs in&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;10&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;79524&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;32.3&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.4&lt;/span&gt;          count_in_class0 = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;sum&lt;/span&gt;(all_counts[class0_indices])  &lt;span style=&quot;color:#777&quot;&gt;# how many of them are class 0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;11&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;3871&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.6&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.2&lt;/span&gt;          p = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;float&lt;/span&gt;(count_in_class0) / total_counts;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;12&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;29874&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;12.1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.3&lt;/span&gt;          log_odds_this_feature = np.log(p) - np.log(&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt; - p)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;13&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;2595&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.1&lt;/span&gt;          log_odds[idx] = log_odds_this_feature
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;14&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;            &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; log_odds
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Most of the time is spent on line 9, where I am using the Python &lt;code&gt;sum&lt;/code&gt; function&lt;br /&gt;
 to add up a &lt;code&gt;numpy&lt;/code&gt; array. This can be made much faster by using the appropriate&lt;br /&gt;
 numpy function:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;Function: calculate_log_odds2 at line 16
-Total time: 1.54092 s
-
-Line #      Hits         Time  Per Hit   % Time  Line Contents
-==============================================================
-    16                                           def calculate_log_odds2(X, y):
-    17         1           16     16.0      0.0      log_odds = np.empty(X.shape[1])
-    18         1           55     55.0      0.0      class0_indices = (y == sorted(set(y))[0])
-    19         1          526    526.0      0.0      X = X.tocsc()
-    20      2466         1746      0.7      0.1      for idx in range(X.shape[1]):
-    21      2465      1417910    575.2     92.0          all_counts = X[:, idx].A.ravel()  # document counts of this feature
-    22      2465        49792     20.2      3.2          total_counts = np.sum(all_counts &amp;gt; 0)  # how many docs the feature occurs in
-    23      2465        32936     13.4      2.1          count_in_class0 = np.sum(all_counts[class0_indices])  # how many of them are class 0
-    24      2465         4377      1.8      0.3          p = float(count_in_class0) / total_counts;
-    25      2465        30788     12.5      2.0          log_odds_this_feature = np.log(p) - np.log(1 - p)
-    26      2465         2769      1.1      0.2          log_odds[idx] = log_odds_this_feature
-    27         1            1      1.0      0.0      return log_odds
-
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Function: calculate_log_odds2 at line &lt;span style=&quot;color:#00D&quot;&gt;16&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;Total time: &lt;span style=&quot;color:#60E&quot;&gt;1.54092&lt;/span&gt; s
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;Line &lt;span style=&quot;color:#777&quot;&gt;#      Hits         Time  Per Hit   % Time  Line Contents&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;==============================================================
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;16&lt;/span&gt;                                           &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;calculate_log_odds2&lt;/span&gt;(X, y):
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;17&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;16&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;16.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      log_odds = np.empty(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;])
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;18&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;55&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;55.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      class0_indices = (y == &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;sorted&lt;/span&gt;(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;set&lt;/span&gt;(y))[&lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;])
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;19&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;          &lt;span style=&quot;color:#00D&quot;&gt;526&lt;/span&gt;    &lt;span style=&quot;color:#60E&quot;&gt;526.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      X = X.tocsc()
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;20&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2466&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1746&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.7&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.1&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; idx &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;in&lt;/span&gt; &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;range&lt;/span&gt;(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;]):
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;21&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;1417910&lt;/span&gt;    &lt;span style=&quot;color:#60E&quot;&gt;575.2&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;92.0&lt;/span&gt;          all_counts = X[:, idx].A.ravel()  &lt;span style=&quot;color:#777&quot;&gt;# document counts of this feature&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;22&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;49792&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;20.2&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.2&lt;/span&gt;          total_counts = np.sum(all_counts &amp;gt; &lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;)  &lt;span style=&quot;color:#777&quot;&gt;# how many docs the feature occurs in&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;23&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;32936&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;13.4&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;2.1&lt;/span&gt;          count_in_class0 = np.sum(all_counts[class0_indices])  &lt;span style=&quot;color:#777&quot;&gt;# how many of them are class 0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;24&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;4377&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.8&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.3&lt;/span&gt;          p = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;float&lt;/span&gt;(count_in_class0) / total_counts;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;25&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;30788&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;12.5&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;2.0&lt;/span&gt;          log_odds_this_feature = np.log(p) - np.log(&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt; - p)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;26&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;2769&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.2&lt;/span&gt;          log_odds[idx] = log_odds_this_feature
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;27&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;            &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; log_odds
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;Note the running time has gone down from 2.3s to 1.5s. Now the bottleneck of the&lt;br /&gt;
 function seems to be at line 21, where I slice a sparse matrix and unnecessarily&lt;br /&gt;
 convert to it a dense one. After a few more iterations of 1) find bottleneck line, and 2) correct line, I&lt;br /&gt;
 arrived at the following:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;Total time: 0.058181 s
-
-Line #      Hits         Time  Per Hit   % Time  Line Contents
-==============================================================
-    56                                           def calculate_log_odds5(X, y):
-    57         1           13     13.0      0.0      log_odds = np.empty(X.shape[1])
-    58         1           47     47.0      0.1      class0_indices = y == sorted(set(y))[0]
-    59         1          619    619.0      1.1      X = X.A
-    60      2466         1792      0.7      3.1      for idx in range(X.shape[1]):
-    61      2465         8277      3.4     14.2          all_counts = X[:, idx]  # document counts of this feature
-    62      2465         7354      3.0     12.6          total_counts = np.count_nonzero(all_counts)  # how many docs the feature occurs in
-    63      2465         8044      3.3     13.8          count_in_class0 = np.count_nonzero(all_counts[class0_indices])  # how many of them are class 0
-    64      2465         3521      1.4      6.1          p = float(count_in_class0) / total_counts
-    65      2465        25890     10.5     44.5          log_odds_this_feature = np.log(p) - np.log(1 - p)
-    66      2465         2623      1.1      4.5          log_odds[idx] = log_odds_this_feature
-    67         1            1      1.0      0.0      return log_odds
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Total time: &lt;span style=&quot;color:#60E&quot;&gt;0.058181&lt;/span&gt; s
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;Line &lt;span style=&quot;color:#777&quot;&gt;#      Hits         Time  Per Hit   % Time  Line Contents&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;==============================================================
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;56&lt;/span&gt;                                           &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;calculate_log_odds5&lt;/span&gt;(X, y):
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;57&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;13&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;13.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      log_odds = np.empty(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;])
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;58&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;           &lt;span style=&quot;color:#00D&quot;&gt;47&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;47.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.1&lt;/span&gt;      class0_indices = y == &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;sorted&lt;/span&gt;(&lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;set&lt;/span&gt;(y))[&lt;span style=&quot;color:#00D&quot;&gt;0&lt;/span&gt;]
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;59&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;          &lt;span style=&quot;color:#00D&quot;&gt;619&lt;/span&gt;    &lt;span style=&quot;color:#60E&quot;&gt;619.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.1&lt;/span&gt;      X = X.A
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;60&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2466&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1792&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.7&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.1&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;for&lt;/span&gt; idx &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;in&lt;/span&gt; &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;range&lt;/span&gt;(X.shape[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;]):
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;61&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;8277&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.4&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;14.2&lt;/span&gt;          all_counts = X[:, idx]  &lt;span style=&quot;color:#777&quot;&gt;# document counts of this feature&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;62&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;7354&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.0&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;12.6&lt;/span&gt;          total_counts = np.count_nonzero(all_counts)  &lt;span style=&quot;color:#777&quot;&gt;# how many docs the feature occurs in&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;63&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;8044&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;3.3&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;13.8&lt;/span&gt;          count_in_class0 = np.count_nonzero(all_counts[class0_indices])  &lt;span style=&quot;color:#777&quot;&gt;# how many of them are class 0&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;64&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;3521&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.4&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;6.1&lt;/span&gt;          p = &lt;span style=&quot;color:#369;font-weight:bold&quot;&gt;float&lt;/span&gt;(count_in_class0) / total_counts
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;65&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;        &lt;span style=&quot;color:#00D&quot;&gt;25890&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;10.5&lt;/span&gt;     &lt;span style=&quot;color:#60E&quot;&gt;44.5&lt;/span&gt;          log_odds_this_feature = np.log(p) - np.log(&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt; - p)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;66&lt;/span&gt;      &lt;span style=&quot;color:#00D&quot;&gt;2465&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;2623&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;4.5&lt;/span&gt;          log_odds[idx] = log_odds_this_feature
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#00D&quot;&gt;67&lt;/span&gt;         &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;            &lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;1.0&lt;/span&gt;      &lt;span style=&quot;color:#60E&quot;&gt;0.0&lt;/span&gt;      &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; log_odds
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
 &lt;p&gt;The running time is now 0.05 seconds, or a speedup of ~50x. The bottleneck&lt;br /&gt;
 operation is now entirely done on &lt;code&gt;numpy&lt;/code&gt; arrays, so there are no more&lt;br /&gt;
