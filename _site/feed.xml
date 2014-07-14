@@ -5,16 +5,14 @@
     <description>Miroslav Batchkarov&#39;s webspace</description>
     <link>http://mbatchkarov.github.io/</link>
     <atom:link href="http://mbatchkarov.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 14 Jul 2014 16:24:28 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Jul 2014 16:24:28 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Jul 2014 16:36:29 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Jul 2014 16:36:29 +0100</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
         <title>Profiling Python</title>
-        <description>&lt;p&gt;Miroslav Batchkarov, 14 July 2014&lt;/p&gt;
-
-&lt;p&gt;This article explains the basics of profiling Python code. The hardest part is&lt;br /&gt;
-to install all the great tools that make it trivial to find the bottleneck in&lt;br /&gt;
+        <description>&lt;p&gt;This article explains the basics of profiling Python code. The hardest part is&lt;br /&gt;
+installing all the great tools that make it trivial to find the bottleneck in&lt;br /&gt;
 your code.&lt;/p&gt;
 
 &lt;h2 id=&quot;getting-the-required-tools&quot;&gt;Getting the required tools&lt;/h2&gt;
@@ -124,7 +122,6 @@ python -m cProfile -o out.prof mycode.py
 or &lt;code&gt;runsnakerun&lt;/code&gt;. The visualisation might like this:&lt;/p&gt;
 
 &lt;!-- ![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png) --&gt;
-
 &lt;p&gt;&lt;img src=&quot;http://mbatchkarov.github.io/assets/images/runsnake.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The top left corner of that image can be read as&lt;br /&gt;

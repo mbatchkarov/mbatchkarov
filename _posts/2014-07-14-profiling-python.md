@@ -6,10 +6,8 @@ tags: [python, profiling, performance]
 ---
 
 
-Miroslav Batchkarov, 14 July 2014
-
 This article explains the basics of profiling Python code. The hardest part is
-to install all the great tools that make it trivial to find the bottleneck in
+installing all the great tools that make it trivial to find the bottleneck in
 your code.
 
 ## Getting the required tools
