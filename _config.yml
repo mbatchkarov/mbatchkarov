@@ -1,0 +1,15 @@
+# Site settings
+title: Miroslav Batchkarov
+email: mbatchkarov@gmail.com
+description: "Miroslav Batchkarov's webspace"
+baseurl: ""
+url: "http://mbatchkarov.github.io"
+twitter_username: loglinear
+github_username:  mbatchkarov
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+kramdown:
+  input: GFM
