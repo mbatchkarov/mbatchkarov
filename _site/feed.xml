@@ -5,36 +5,9 @@
     <description>Miroslav Batchkarov&#39;s webspace</description>
     <link>http://mbatchkarov.github.io/</link>
     <atom:link href="http://mbatchkarov.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 14 Jul 2014 15:58:32 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Jul 2014 15:58:32 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Jul 2014 16:24:28 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Jul 2014 16:24:28 +0100</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
-    
-      <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory - edit this post and re-build (or run with the &lt;code&gt;-w&lt;/code&gt; switch) to see your changes!&lt;br /&gt;
-To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention: YYYY-MM-DD-name-of-post.ext.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 14 Jul 2014 15:52:58 +0100</pubDate>
-        <link>http://mbatchkarov.github.io/jekyll/update/2014/07/14/welcome-to-jekyll/</link>
-        <guid isPermaLink="true">http://mbatchkarov.github.io/jekyll/update/2014/07/14/welcome-to-jekyll/</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
-        
-      </item>
     
       <item>
         <title>Profiling Python</title>
@@ -150,9 +123,9 @@ python -m cProfile -o out.prof mycode.py
 &lt;p&gt;This creates a file called &lt;code&gt;out.prof&lt;/code&gt;, which can be visualised using &lt;code&gt;snakeviz&lt;/code&gt;&lt;br /&gt;
 or &lt;code&gt;runsnakerun&lt;/code&gt;. The visualisation might like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/20043416/runsnake.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;!-- ![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png) --&gt;
 
-&lt;!-- ![Image](http://mbatchkarov.github.io/assets/images/runsnake.png) --&gt;
+&lt;p&gt;&lt;img src=&quot;http://mbatchkarov.github.io/assets/images/runsnake.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The top left corner of that image can be read as&lt;br /&gt;
  - function &lt;code&gt;_count_vocab&lt;/code&gt; took a total of 1.6s&lt;br /&gt;
@@ -262,15 +235,15 @@ and  must be imported from a file on disk&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 14 Jul 2014 15:52:58 +0100</pubDate>
-        <link>http://mbatchkarov.github.io/python/profiling/performance/2014/07/14/profiling-python/</link>
-        <guid isPermaLink="true">http://mbatchkarov.github.io/python/profiling/performance/2014/07/14/profiling-python/</guid>
-        
+        <link>http://mbatchkarov.github.io/2014/07/14/profiling-python/</link>
+        <guid isPermaLink="true">http://mbatchkarov.github.io/2014/07/14/profiling-python/</guid>
         
         <category>python</category>
         
         <category>profiling</category>
         
         <category>performance</category>
+        
         
       </item>
     

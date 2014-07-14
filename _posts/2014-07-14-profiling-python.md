@@ -2,7 +2,7 @@
 layout: post
 title:  "Profiling Python"
 date:   2014-07-14 14:52:58
-categories: python profiling performance
+tags: [python, profiling, performance]
 ---
 
 
@@ -125,9 +125,8 @@ python -m cProfile -o out.prof mycode.py
 This creates a file called `out.prof`, which can be visualised using `snakeviz`
 or `runsnakerun`. The visualisation might like this:
 
-![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png)
-
-<!-- ![Image]({{ site.url }}/assets/images/runsnake.png) -->
+<!-- ![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png) -->
+![Image]({{ site.url }}/assets/images/runsnake.png)
 
 The top left corner of that image can be read as
  - function `_count_vocab` took a total of 1.6s
