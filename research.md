@@ -4,7 +4,7 @@ title: Research
 permalink: /research/
 ---
 
-Recent projects
+Recent research projects
 
  - Evaluation of methods for compositional distributional semantics (2010- )
  - Automatic moderation of online message boards (2011- )
