@@ -12,7 +12,7 @@ permalink: /code/
  - [RCaller](https://code.google.com/p/rcaller/) (2011)- calling R code from Java
  - [DISSECT](https://github.com/composes-toolkit/dissect) (2014)- a toolkit for distributional compositional semantics. I ported it to Python 3 and simplified the code base a bit.
 
-#### Less known usseful software others have written
+#### Less known useful software others have written
 - [Sikuli script](http://www.sikuli.org)- automatic UI actions
 - [CRF Suite](http://www.chokkan.org/software/crfsuite/) and [Python bindings](https://github.com/tpeng/python-crfsuite)- a fast and well-documented implementation of conditional random fields
 - [word2vec](https://code.google.com/p/word2vec/) and [GloVe](http://www-nlp.stanford.edu/projects/glove/)- fast and accurate neural word embeddings
