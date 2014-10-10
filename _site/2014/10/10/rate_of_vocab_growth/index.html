@@ -78,15 +78,15 @@
   </header>
 
   <article class="post-content">
-  <p>My colleague <a href="https://github.com/mattilyra">Matti Lyra</a> recently faced an<br />
-interesting computational problem.  He wanted to see how quickly a stream of<br />
-temporaly-ordered documents evolves, and he chose to do it by looking at how<br />
-often new words appear in the steam. This post is about how to do this<br />
+  <p>My colleague <a href="https://github.com/mattilyra">Matti Lyra</a> recently faced an
+interesting computational problem.  He wanted to see how quickly a stream of
+temporaly-ordered documents evolves, and he chose to do it by looking at how
+often new words appear in the steam. This post is about how to do this
 efficiently in Python.</p>
 
-<p>More formally, the problem is: given a <a href="http://en.wikipedia.org/wiki/Document-term_matrix">term-document<br />
+<p>More formally, the problem is: given a <a href="http://en.wikipedia.org/wiki/Document-term_matrix">term-document
 matrix</a> (stored as a
-<code>scipy.sparse.csc_matrix</code>), find how many new terms each document introduces as<br />
+<code>scipy.sparse.csc_matrix</code>), find how many new terms each document introduces as
 efficiently as possible. Here is what we came up with.</p>
 
 <p>First let’s generate some plausibly-looking (sparse) matrix to play with.</p>
@@ -113,25 +113,25 @@ print(mat.A)
 </code></pre>
 
 <p>The (sparse) matrix is stored as three dense arrays, <code>data</code>, <code>indices</code> and
-<code>indptr</code>. <code>data</code> contains the non-zero values of the matrix, in the order in<br />
-which they would be encountered if we walked along the columns top to bottom and<br />
-left to right. If this were a <code>csr</code> matrix, the walk would have been along the<br />
+<code>indptr</code>. <code>data</code> contains the non-zero values of the matrix, in the order in
+which they would be encountered if we walked along the columns top to bottom and
+left to right. If this were a <code>csr</code> matrix, the walk would have been along the
 rows.</p>
 
 <pre><code>mat.data[:10]
 array([2, 1, 1, 3, 1, 1, 1, 1, 1, 1])
 </code></pre>
 
-<p>These numbers correspond to the non-zero values we would encounter if we walked<br />
-along the columns of the matrix. Note column boundaries are not marked- this is<br />
-what <code>indptr</code> is for. <code>indptr[i]</code> tell us where the <code>i</code>-th columns begins. For<br />
+<p>These numbers correspond to the non-zero values we would encounter if we walked
+along the columns of the matrix. Note column boundaries are not marked- this is
+what <code>indptr</code> is for. <code>indptr[i]</code> tell us where the <code>i</code>-th columns begins. For
 the matrix above, we have</p>
 
 <pre><code>mat.indptr[:10] # start and end index of each column in the data array
 array([ 0,  3,  7, 11, 15, 18, 20, 26, 27, 31], dtype=int32)
 </code></pre>
 
-<p>So the first column starts at position <code>0</code> and runs until position <code>3</code><br />
+<p>So the first column starts at position <code>0</code> and runs until position <code>3</code>
 (exclusive), the second columns starts at position <code>3</code> and runs until position
 <code>7</code>, etc. Here are the non-zero values stored in the first and second column.</p>
 
@@ -143,7 +143,7 @@ print(mat.data[mat.indptr[1]:mat.indptr[2]])
 </code></pre>
 
 <p>What is still missing is what row these values should go in. This is stored in
-<code>mat.indices</code>. We can index it similarty to how we index <code>mat.indptr</code>. To get<br />
+<code>mat.indices</code>. We can index it similarty to how we index <code>mat.indptr</code>. To get
 the rows in the first column where the non-zero values go, we would do this:</p>
 
 <pre><code>print(mat.indices[:10]) # position of the data in a given row
@@ -155,9 +155,9 @@ print(mat.indices[mat.indptr[0]:mat.indptr[1]])
 
 <p>i.e. the non-zero rows in the first column are at positions 1, 2 and 4.</p>
 
-<p>Let’s get back to our original problem of finding how many new terms appear in<br />
-each document. First, we want to find when (in what document) a term first<br />
-appears, i.e. the position of the first non-zero row in each column.<br />
+<p>Let’s get back to our original problem of finding how many new terms appear in
+each document. First, we want to find when (in what document) a term first
+appears, i.e. the position of the first non-zero row in each column.
 Fortunately, the <code>scipy.sparse.csc</code> format makes that very easy:</p>
 
 <pre><code>first_nonzero_row = mat.indices[mat.indptr[:-1]]
@@ -165,7 +165,7 @@ first_nonzero_row
 array([1, 0, 0, 0, 0, 2, 2, 2, 0, 1, 0, 1], dtype=int32)
 </code></pre>
 
-<p>Now that we know when words first appear, we want to find how many words appear<br />
+<p>Now that we know when words first appear, we want to find how many words appear
 for the first time in each document:</p>
 
 <pre><code>new_cols_per_row = np.bincount(first_nonzero_row, minlength=mat.shape[0])
@@ -173,18 +173,18 @@ print(new_cols_per_row)
 [6 3 3 0 0 0 0 0 0 0]
 </code></pre>
 
-<p>And there you have it- <code>new_cols_per_row[i]</code> corresponds to how many new terms<br />
+<p>And there you have it- <code>new_cols_per_row[i]</code> corresponds to how many new terms
 appeared in the <code>i</code>-th document.</p>
 
-<p>One trick we missed in our original implementation is the <code>minlength</code> parameter<br />
-to <code>bincount</code>. Without it <code>numpy</code> will get rid of bins (i.e. rows) with zero new<br />
+<p>One trick we missed in our original implementation is the <code>minlength</code> parameter
+to <code>bincount</code>. Without it <code>numpy</code> will get rid of bins (i.e. rows) with zero new
 features, and the result will be smaller than what we would expect:</p>
 
 <pre><code>np.bincount(first_nonzero_row)
 array([6, 3, 3])
 </code></pre>
 
-<p>In the real text streams Matti works with, we didn’t find this to be a problem,<br />
+<p>In the real text streams Matti works with, we didn’t find this to be a problem,
 i.e. every document had at least one new term.</p>
 
   </article>

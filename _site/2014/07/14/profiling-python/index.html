@@ -78,8 +78,8 @@
   </header>
 
   <article class="post-content">
-  <p>This article explains the basics of profiling Python code. The hardest part is<br />
-installing all the great tools that make it trivial to find the bottleneck in<br />
+  <p>This article explains the basics of profiling Python code. The hardest part is
+installing all the great tools that make it trivial to find the bottleneck in
 your code.</p>
 
 <h2 id="getting-the-required-tools">Getting the required tools</h2>
@@ -88,9 +88,9 @@ your code.</p>
 
 <h3 id="python-and-core-packages-numpy-scipy-etc">Python and core packages (<code>numpy</code>, <code>scipy</code>, etc)</h3>
 <p>Installing Python modules can sometimes be challenging as these link to compiled
-<code>C</code>/<code>Fortran</code> code behind the scenes. I recommend using <code>conda</code>, which can<br />
-install pre-compiled modules for your operating system. Download from<br />
-http://conda.pydata.org/miniconda.html. <code>conda</code> can be installed to your home<br />
+<code>C</code>/<code>Fortran</code> code behind the scenes. I recommend using <code>conda</code>, which can
+install pre-compiled modules for your operating system. Download from
+http://conda.pydata.org/miniconda.html. <code>conda</code> can be installed to your home
 directory, which comes in handy on the cluster.</p>
 
 <p>After that, you can easily set up a virtual environment and install many of the core packages:</p>
@@ -99,21 +99,21 @@ directory, which comes in handy on the cluster.</p>
 conda install numpy
 </code></pre>
 
-<p>The first step above should prepend the newly set up Python interpreter to your<br />
+<p>The first step above should prepend the newly set up Python interpreter to your
 path. If it doesn’t, prepend the path to the new interpreter by editing
-<code>~/.bashrc</code> and <code>~/.bash_profile</code>. Pip should also be installed— if it is not,<br />
+<code>~/.bashrc</code> and <code>~/.bash_profile</code>. Pip should also be installed— if it is not,
 type  the following into a terminal
 <code>
 conda install pip
 </code></p>
 
-<p>Once <code>conda</code> and <code>pip</code> are up and running, you should always attempt to install<br />
-new Python packages through them instead of from source. This will save a lot of<br />
+<p>Once <code>conda</code> and <code>pip</code> are up and running, you should always attempt to install
+new Python packages through them instead of from source. This will save a lot of
 headache in the long run as you won’t have to compile <code>C</code>/<code>Fortran</code> code.</p>
 
 <h4 id="note">Note</h4>
-<p>Some Python packages serve as a wrapper around other software, such as <code>MySQLdb</code><br />
-around <code>mysql</code> and <code>bsddb</code> around <code>BerkeleyDB</code>. The underlying software is best<br />
+<p>Some Python packages serve as a wrapper around other software, such as <code>MySQLdb</code>
+around <code>mysql</code> and <code>bsddb</code> around <code>BerkeleyDB</code>. The underlying software is best
 installed via <code>homebrew</code>. For instance, here is how to set up <code>BerkeleyDB</code>:</p>
 
 <pre><code># install C/Fortran compilers, these will come in handy all the time
@@ -126,15 +126,15 @@ BERKELEYDB_DIR=/usr/local/Cellar/berkeley-db/5.3.15/ pip install bsddb3
 
 <h3 id="profiling-result-visualisation-runsnakerun-snakeviz">Profiling result visualisation (<code>Runsnakerun</code>/ <code>Snakeviz</code>)</h3>
 
-<p>These tool are useful for finding which function calls take the most time. You<br />
-cannot look inside of functions using these. The next section will explain how<br />
+<p>These tool are useful for finding which function calls take the most time. You
+cannot look inside of functions using these. The next section will explain how
 to profile a single function to find which lines take the most time.</p>
 
-<p>I know of two great packages the can visualise the output of the Python<br />
-profiler. <code>snakeviz</code> has some fancy features and written in pure Python. It is<br />
-easier to set up and use, but somewhat slow. If you have profiled a large chunk<br />
-of an application, <code>snakeviz</code> will give up. In practice, I found it’s only<br />
-useful for small programs. <code>runsnakerun</code> is written in <code>C</code>, so it can display<br />
+<p>I know of two great packages the can visualise the output of the Python
+profiler. <code>snakeviz</code> has some fancy features and written in pure Python. It is
+easier to set up and use, but somewhat slow. If you have profiled a large chunk
+of an application, <code>snakeviz</code> will give up. In practice, I found it’s only
+useful for small programs. <code>runsnakerun</code> is written in <code>C</code>, so it can display
 just about anything, but is somewhat trickier to install.</p>
 
 <pre><code>pip install snakeviz
@@ -146,9 +146,9 @@ pip install runsnakerun
 <p>To visualise the results of a profiling run with <code>snakeviz</code> type
 <code>
 snakeviz out.prof
-</code><br />
+</code>
 where <code>out.prof</code> is the file output by the profiler (see below). If you get
-“Sorry, we were not able to load this profile! You can try profiling a smaller<br />
+“Sorry, we were not able to load this profile! You can try profiling a smaller
 portion of your code.”, then you will have to use <code>runsnakerun</code>:</p>
 
 <pre><code>ipython qtconsole
@@ -162,20 +162,20 @@ runsnake.main()
 
 <p>then use the GUI to open <code>out.prof</code>.</p>
 
-<p>The reason we are using <code>ipython</code> instead of launching <code>runsnakerun</code> from the<br />
-terminal is that OSX restricts some applications’ access to the screen. The<br />
-version of <code>runsnakerun</code> installed through <code>pip</code> is not an Apple “framework” and<br />
-therefore cannot access the screen. There are multiple guides explaining how to<br />
+<p>The reason we are using <code>ipython</code> instead of launching <code>runsnakerun</code> from the
+terminal is that OSX restricts some applications’ access to the screen. The
+version of <code>runsnakerun</code> installed through <code>pip</code> is not an Apple “framework” and
+therefore cannot access the screen. There are multiple guides explaining how to
 get around this on the Internet, but none of them has worked for me.</p>
 
 <h3 id="ipython-extensions">IPython extensions</h3>
 
-<p>There are many great tutorials on how to set up and use the required IPython<br />
+<p>There are many great tutorials on how to set up and use the required IPython
   extensions, such as http://pynash.org/2013/03/06/timing-and-profiling.html .</p>
 
-<p>These extensions are best used to profile single functions (see below). <code>lprun</code><br />
-and <code>mprun</code> are of particular interest. Also note <code>prun</code> prints as a table the<br />
-same information that <code>snakeviz</code>/<code>runsnakerun</code> visualises. Personally I find<br />
+<p>These extensions are best used to profile single functions (see below). <code>lprun</code>
+and <code>mprun</code> are of particular interest. Also note <code>prun</code> prints as a table the
+same information that <code>snakeviz</code>/<code>runsnakerun</code> visualises. Personally I find
 the visualisation much more useful.</p>
 
 <h2 id="profiling-the-entire-application">Profiling the entire application</h2>
@@ -185,28 +185,28 @@ the visualisation much more useful.</p>
 python -m cProfile -o out.prof mycode.py
 </code></p>
 
-<p>This creates a file called <code>out.prof</code>, which can be visualised using <code>snakeviz</code><br />
+<p>This creates a file called <code>out.prof</code>, which can be visualised using <code>snakeviz</code>
 or <code>runsnakerun</code>. The visualisation might like this:</p>
 
 <!-- ![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png) -->
 <p><img src="http://mbatchkarov.github.io/assets/images/runsnake.png" alt="Image" /></p>
 
-<p>The top left corner of that image can be read as<br />
- - function <code>_count_vocab</code> took a total of 1.6s<br />
- - 0.6s of which were spent in <code>__contains__</code> (not visible in the image, you<br />
-   need to hover over the box in <code>runsnakerun</code>)<br />
+<p>The top left corner of that image can be read as
+ - function <code>_count_vocab</code> took a total of 1.6s
+ - 0.6s of which were spent in <code>__contains__</code> (not visible in the image, you
+   need to hover over the box in <code>runsnakerun</code>)
  - 0.2s of which were spent in <code>__my_feature_extractor__</code>, etc</p>
 
 <p>This technique can be used to find out which functions take a long time.</p>
 
 <h2 id="profiling-functions">Profiling functions</h2>
 
-<p>Having set up the required IPython extensions and identified bottleneck functions,<br />
-we can profile and incrementally optimise these. Let’s illustrate this with a real<br />
+<p>Having set up the required IPython extensions and identified bottleneck functions,
+we can profile and incrementally optimise these. Let’s illustrate this with a real
 example I was recently working on.</p>
 
-<p>I have a function called <code>calculate_log_odds</code>, which does something rather<br />
-simple but seems to take a lot of time. To profile it line by line, I ran the<br />
+<p>I have a function called <code>calculate_log_odds</code>, which does something rather
+simple but seems to take a lot of time. To profile it line by line, I ran the
 following command in IPython</p>
 
 <pre><code class="language-python"># get some data to run the function with
@@ -239,8 +239,8 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 </code></pre>
 
-<p>Most of the time is spent on line 9, where I am using the Python <code>sum</code> function<br />
-to add up a <code>numpy</code> array. This can be made much faster by using the appropriate<br />
+<p>Most of the time is spent on line 9, where I am using the Python <code>sum</code> function
+to add up a <code>numpy</code> array. This can be made much faster by using the appropriate
 numpy function:</p>
 
 <pre><code class="language-python">Function: calculate_log_odds2 at line 16
@@ -263,9 +263,9 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 </code></pre>
 
-<p>Note the running time has gone down from 2.3s to 1.5s. Now the bottleneck of the<br />
-function seems to be at line 21, where I slice a sparse matrix and unnecessarily<br />
-convert to it a dense one. After a few more iterations of 1) find bottleneck line, and 2) correct line, I<br />
+<p>Note the running time has gone down from 2.3s to 1.5s. Now the bottleneck of the
+function seems to be at line 21, where I slice a sparse matrix and unnecessarily
+convert to it a dense one. After a few more iterations of 1) find bottleneck line, and 2) correct line, I
 arrived at the following:</p>
 
 <pre><code class="language-python">Total time: 0.058181 s
@@ -286,15 +286,15 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     67         1            1      1.0      0.0      return log_odds
 </code></pre>
 
-<p>The running time is now 0.05 seconds, or a speedup of ~50x. The bottleneck<br />
-operation is now entirely done on <code>numpy</code> arrays, so there are no more<br />
+<p>The running time is now 0.05 seconds, or a speedup of ~50x. The bottleneck
+operation is now entirely done on <code>numpy</code> arrays, so there are no more
 low-hanging fruit.</p>
 
 <h4 id="notes">Notes</h4>
 <ul>
-  <li>Having unit tests for the functions that you are optimising is essential<br />
+  <li>Having unit tests for the functions that you are optimising is essential
 to making sure nothing gets broken.</li>
-  <li>Functions to be profiled line by line cannot be typed into the interactive shell<br />
+  <li>Functions to be profiled line by line cannot be typed into the interactive shell
 and  must be imported from a file on disk</li>
 </ul>
 

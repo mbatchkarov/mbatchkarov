@@ -5,21 +5,21 @@
     <description>Miroslav Batchkarov&#39;s webspace</description>
     <link>http://mbatchkarov.github.io/</link>
     <atom:link href="http://mbatchkarov.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 10 Oct 2014 13:03:55 +0100</pubDate>
-    <lastBuildDate>Fri, 10 Oct 2014 13:03:55 +0100</lastBuildDate>
+    <pubDate>Fri, 10 Oct 2014 13:08:38 +0100</pubDate>
+    <lastBuildDate>Fri, 10 Oct 2014 13:08:38 +0100</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
         <title>An exploration of scipy sparse matrices</title>
-        <description>&lt;p&gt;My colleague &lt;a href=&quot;https://github.com/mattilyra&quot;&gt;Matti Lyra&lt;/a&gt; recently faced an&lt;br /&gt;
-interesting computational problem.  He wanted to see how quickly a stream of&lt;br /&gt;
-temporaly-ordered documents evolves, and he chose to do it by looking at how&lt;br /&gt;
-often new words appear in the steam. This post is about how to do this&lt;br /&gt;
+        <description>&lt;p&gt;My colleague &lt;a href=&quot;https://github.com/mattilyra&quot;&gt;Matti Lyra&lt;/a&gt; recently faced an
+interesting computational problem.  He wanted to see how quickly a stream of
+temporaly-ordered documents evolves, and he chose to do it by looking at how
+often new words appear in the steam. This post is about how to do this
 efficiently in Python.&lt;/p&gt;
 
-&lt;p&gt;More formally, the problem is: given a &lt;a href=&quot;http://en.wikipedia.org/wiki/Document-term_matrix&quot;&gt;term-document&lt;br /&gt;
+&lt;p&gt;More formally, the problem is: given a &lt;a href=&quot;http://en.wikipedia.org/wiki/Document-term_matrix&quot;&gt;term-document
 matrix&lt;/a&gt; (stored as a
-&lt;code&gt;scipy.sparse.csc_matrix&lt;/code&gt;), find how many new terms each document introduces as&lt;br /&gt;
+&lt;code&gt;scipy.sparse.csc_matrix&lt;/code&gt;), find how many new terms each document introduces as
 efficiently as possible. Here is what we came up with.&lt;/p&gt;
 
 &lt;p&gt;First let’s generate some plausibly-looking (sparse) matrix to play with.&lt;/p&gt;
@@ -46,25 +46,25 @@ print(mat.A)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The (sparse) matrix is stored as three dense arrays, &lt;code&gt;data&lt;/code&gt;, &lt;code&gt;indices&lt;/code&gt; and
-&lt;code&gt;indptr&lt;/code&gt;. &lt;code&gt;data&lt;/code&gt; contains the non-zero values of the matrix, in the order in&lt;br /&gt;
-which they would be encountered if we walked along the columns top to bottom and&lt;br /&gt;
-left to right. If this were a &lt;code&gt;csr&lt;/code&gt; matrix, the walk would have been along the&lt;br /&gt;
+&lt;code&gt;indptr&lt;/code&gt;. &lt;code&gt;data&lt;/code&gt; contains the non-zero values of the matrix, in the order in
+which they would be encountered if we walked along the columns top to bottom and
+left to right. If this were a &lt;code&gt;csr&lt;/code&gt; matrix, the walk would have been along the
 rows.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;mat.data[:10]
 array([2, 1, 1, 3, 1, 1, 1, 1, 1, 1])
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;These numbers correspond to the non-zero values we would encounter if we walked&lt;br /&gt;
-along the columns of the matrix. Note column boundaries are not marked- this is&lt;br /&gt;
-what &lt;code&gt;indptr&lt;/code&gt; is for. &lt;code&gt;indptr[i]&lt;/code&gt; tell us where the &lt;code&gt;i&lt;/code&gt;-th columns begins. For&lt;br /&gt;
+&lt;p&gt;These numbers correspond to the non-zero values we would encounter if we walked
+along the columns of the matrix. Note column boundaries are not marked- this is
+what &lt;code&gt;indptr&lt;/code&gt; is for. &lt;code&gt;indptr[i]&lt;/code&gt; tell us where the &lt;code&gt;i&lt;/code&gt;-th columns begins. For
 the matrix above, we have&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;mat.indptr[:10] # start and end index of each column in the data array
 array([ 0,  3,  7, 11, 15, 18, 20, 26, 27, 31], dtype=int32)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;So the first column starts at position &lt;code&gt;0&lt;/code&gt; and runs until position &lt;code&gt;3&lt;/code&gt;&lt;br /&gt;
+&lt;p&gt;So the first column starts at position &lt;code&gt;0&lt;/code&gt; and runs until position &lt;code&gt;3&lt;/code&gt;
 (exclusive), the second columns starts at position &lt;code&gt;3&lt;/code&gt; and runs until position
 &lt;code&gt;7&lt;/code&gt;, etc. Here are the non-zero values stored in the first and second column.&lt;/p&gt;
 
@@ -76,7 +76,7 @@ print(mat.data[mat.indptr[1]:mat.indptr[2]])
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;What is still missing is what row these values should go in. This is stored in
-&lt;code&gt;mat.indices&lt;/code&gt;. We can index it similarty to how we index &lt;code&gt;mat.indptr&lt;/code&gt;. To get&lt;br /&gt;
+&lt;code&gt;mat.indices&lt;/code&gt;. We can index it similarty to how we index &lt;code&gt;mat.indptr&lt;/code&gt;. To get
 the rows in the first column where the non-zero values go, we would do this:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;print(mat.indices[:10]) # position of the data in a given row
@@ -88,9 +88,9 @@ print(mat.indices[mat.indptr[0]:mat.indptr[1]])
 
 &lt;p&gt;i.e. the non-zero rows in the first column are at positions 1, 2 and 4.&lt;/p&gt;
 
-&lt;p&gt;Let’s get back to our original problem of finding how many new terms appear in&lt;br /&gt;
-each document. First, we want to find when (in what document) a term first&lt;br /&gt;
-appears, i.e. the position of the first non-zero row in each column.&lt;br /&gt;
+&lt;p&gt;Let’s get back to our original problem of finding how many new terms appear in
+each document. First, we want to find when (in what document) a term first
+appears, i.e. the position of the first non-zero row in each column.
 Fortunately, the &lt;code&gt;scipy.sparse.csc&lt;/code&gt; format makes that very easy:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;first_nonzero_row = mat.indices[mat.indptr[:-1]]
@@ -98,7 +98,7 @@ first_nonzero_row
 array([1, 0, 0, 0, 0, 2, 2, 2, 0, 1, 0, 1], dtype=int32)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Now that we know when words first appear, we want to find how many words appear&lt;br /&gt;
+&lt;p&gt;Now that we know when words first appear, we want to find how many words appear
 for the first time in each document:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;new_cols_per_row = np.bincount(first_nonzero_row, minlength=mat.shape[0])
@@ -106,18 +106,18 @@ print(new_cols_per_row)
 [6 3 3 0 0 0 0 0 0 0]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;And there you have it- &lt;code&gt;new_cols_per_row[i]&lt;/code&gt; corresponds to how many new terms&lt;br /&gt;
+&lt;p&gt;And there you have it- &lt;code&gt;new_cols_per_row[i]&lt;/code&gt; corresponds to how many new terms
 appeared in the &lt;code&gt;i&lt;/code&gt;-th document.&lt;/p&gt;
 
-&lt;p&gt;One trick we missed in our original implementation is the &lt;code&gt;minlength&lt;/code&gt; parameter&lt;br /&gt;
-to &lt;code&gt;bincount&lt;/code&gt;. Without it &lt;code&gt;numpy&lt;/code&gt; will get rid of bins (i.e. rows) with zero new&lt;br /&gt;
+&lt;p&gt;One trick we missed in our original implementation is the &lt;code&gt;minlength&lt;/code&gt; parameter
+to &lt;code&gt;bincount&lt;/code&gt;. Without it &lt;code&gt;numpy&lt;/code&gt; will get rid of bins (i.e. rows) with zero new
 features, and the result will be smaller than what we would expect:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;np.bincount(first_nonzero_row)
 array([6, 3, 3])
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In the real text streams Matti works with, we didn’t find this to be a problem,&lt;br /&gt;
+&lt;p&gt;In the real text streams Matti works with, we didn’t find this to be a problem,
 i.e. every document had at least one new term.&lt;/p&gt;
 </description>
         <pubDate>Fri, 10 Oct 2014 15:52:58 +0100</pubDate>
@@ -131,8 +131,8 @@ i.e. every document had at least one new term.&lt;/p&gt;
     
       <item>
         <title>Profiling Python</title>
-        <description>&lt;p&gt;This article explains the basics of profiling Python code. The hardest part is&lt;br /&gt;
-installing all the great tools that make it trivial to find the bottleneck in&lt;br /&gt;
+        <description>&lt;p&gt;This article explains the basics of profiling Python code. The hardest part is
+installing all the great tools that make it trivial to find the bottleneck in
 your code.&lt;/p&gt;
 
 &lt;h2 id=&quot;getting-the-required-tools&quot;&gt;Getting the required tools&lt;/h2&gt;
@@ -141,9 +141,9 @@ your code.&lt;/p&gt;
 
 &lt;h3 id=&quot;python-and-core-packages-numpy-scipy-etc&quot;&gt;Python and core packages (&lt;code&gt;numpy&lt;/code&gt;, &lt;code&gt;scipy&lt;/code&gt;, etc)&lt;/h3&gt;
 &lt;p&gt;Installing Python modules can sometimes be challenging as these link to compiled
-&lt;code&gt;C&lt;/code&gt;/&lt;code&gt;Fortran&lt;/code&gt; code behind the scenes. I recommend using &lt;code&gt;conda&lt;/code&gt;, which can&lt;br /&gt;
-install pre-compiled modules for your operating system. Download from&lt;br /&gt;
-http://conda.pydata.org/miniconda.html. &lt;code&gt;conda&lt;/code&gt; can be installed to your home&lt;br /&gt;
+&lt;code&gt;C&lt;/code&gt;/&lt;code&gt;Fortran&lt;/code&gt; code behind the scenes. I recommend using &lt;code&gt;conda&lt;/code&gt;, which can
+install pre-compiled modules for your operating system. Download from
+http://conda.pydata.org/miniconda.html. &lt;code&gt;conda&lt;/code&gt; can be installed to your home
 directory, which comes in handy on the cluster.&lt;/p&gt;
 
 &lt;p&gt;After that, you can easily set up a virtual environment and install many of the core packages:&lt;/p&gt;
@@ -152,21 +152,21 @@ directory, which comes in handy on the cluster.&lt;/p&gt;
 conda install numpy
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The first step above should prepend the newly set up Python interpreter to your&lt;br /&gt;
+&lt;p&gt;The first step above should prepend the newly set up Python interpreter to your
 path. If it doesn’t, prepend the path to the new interpreter by editing
-&lt;code&gt;~/.bashrc&lt;/code&gt; and &lt;code&gt;~/.bash_profile&lt;/code&gt;. Pip should also be installed— if it is not,&lt;br /&gt;
+&lt;code&gt;~/.bashrc&lt;/code&gt; and &lt;code&gt;~/.bash_profile&lt;/code&gt;. Pip should also be installed— if it is not,
 type  the following into a terminal
 &lt;code&gt;
 conda install pip
 &lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Once &lt;code&gt;conda&lt;/code&gt; and &lt;code&gt;pip&lt;/code&gt; are up and running, you should always attempt to install&lt;br /&gt;
-new Python packages through them instead of from source. This will save a lot of&lt;br /&gt;
+&lt;p&gt;Once &lt;code&gt;conda&lt;/code&gt; and &lt;code&gt;pip&lt;/code&gt; are up and running, you should always attempt to install
+new Python packages through them instead of from source. This will save a lot of
 headache in the long run as you won’t have to compile &lt;code&gt;C&lt;/code&gt;/&lt;code&gt;Fortran&lt;/code&gt; code.&lt;/p&gt;
 
 &lt;h4 id=&quot;note&quot;&gt;Note&lt;/h4&gt;
-&lt;p&gt;Some Python packages serve as a wrapper around other software, such as &lt;code&gt;MySQLdb&lt;/code&gt;&lt;br /&gt;
-around &lt;code&gt;mysql&lt;/code&gt; and &lt;code&gt;bsddb&lt;/code&gt; around &lt;code&gt;BerkeleyDB&lt;/code&gt;. The underlying software is best&lt;br /&gt;
+&lt;p&gt;Some Python packages serve as a wrapper around other software, such as &lt;code&gt;MySQLdb&lt;/code&gt;
+around &lt;code&gt;mysql&lt;/code&gt; and &lt;code&gt;bsddb&lt;/code&gt; around &lt;code&gt;BerkeleyDB&lt;/code&gt;. The underlying software is best
 installed via &lt;code&gt;homebrew&lt;/code&gt;. For instance, here is how to set up &lt;code&gt;BerkeleyDB&lt;/code&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;# install C/Fortran compilers, these will come in handy all the time
@@ -179,15 +179,15 @@ BERKELEYDB_DIR=/usr/local/Cellar/berkeley-db/5.3.15/ pip install bsddb3
 
 &lt;h3 id=&quot;profiling-result-visualisation-runsnakerun-snakeviz&quot;&gt;Profiling result visualisation (&lt;code&gt;Runsnakerun&lt;/code&gt;/ &lt;code&gt;Snakeviz&lt;/code&gt;)&lt;/h3&gt;
 
-&lt;p&gt;These tool are useful for finding which function calls take the most time. You&lt;br /&gt;
-cannot look inside of functions using these. The next section will explain how&lt;br /&gt;
+&lt;p&gt;These tool are useful for finding which function calls take the most time. You
+cannot look inside of functions using these. The next section will explain how
 to profile a single function to find which lines take the most time.&lt;/p&gt;
 
-&lt;p&gt;I know of two great packages the can visualise the output of the Python&lt;br /&gt;
-profiler. &lt;code&gt;snakeviz&lt;/code&gt; has some fancy features and written in pure Python. It is&lt;br /&gt;
-easier to set up and use, but somewhat slow. If you have profiled a large chunk&lt;br /&gt;
-of an application, &lt;code&gt;snakeviz&lt;/code&gt; will give up. In practice, I found it’s only&lt;br /&gt;
-useful for small programs. &lt;code&gt;runsnakerun&lt;/code&gt; is written in &lt;code&gt;C&lt;/code&gt;, so it can display&lt;br /&gt;
+&lt;p&gt;I know of two great packages the can visualise the output of the Python
+profiler. &lt;code&gt;snakeviz&lt;/code&gt; has some fancy features and written in pure Python. It is
+easier to set up and use, but somewhat slow. If you have profiled a large chunk
+of an application, &lt;code&gt;snakeviz&lt;/code&gt; will give up. In practice, I found it’s only
+useful for small programs. &lt;code&gt;runsnakerun&lt;/code&gt; is written in &lt;code&gt;C&lt;/code&gt;, so it can display
 just about anything, but is somewhat trickier to install.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;pip install snakeviz
@@ -199,9 +199,9 @@ pip install runsnakerun
 &lt;p&gt;To visualise the results of a profiling run with &lt;code&gt;snakeviz&lt;/code&gt; type
 &lt;code&gt;
 snakeviz out.prof
-&lt;/code&gt;&lt;br /&gt;
+&lt;/code&gt;
 where &lt;code&gt;out.prof&lt;/code&gt; is the file output by the profiler (see below). If you get
-“Sorry, we were not able to load this profile! You can try profiling a smaller&lt;br /&gt;
+“Sorry, we were not able to load this profile! You can try profiling a smaller
 portion of your code.”, then you will have to use &lt;code&gt;runsnakerun&lt;/code&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;ipython qtconsole
@@ -215,20 +215,20 @@ runsnake.main()
 
 &lt;p&gt;then use the GUI to open &lt;code&gt;out.prof&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;The reason we are using &lt;code&gt;ipython&lt;/code&gt; instead of launching &lt;code&gt;runsnakerun&lt;/code&gt; from the&lt;br /&gt;
-terminal is that OSX restricts some applications’ access to the screen. The&lt;br /&gt;
-version of &lt;code&gt;runsnakerun&lt;/code&gt; installed through &lt;code&gt;pip&lt;/code&gt; is not an Apple “framework” and&lt;br /&gt;
-therefore cannot access the screen. There are multiple guides explaining how to&lt;br /&gt;
+&lt;p&gt;The reason we are using &lt;code&gt;ipython&lt;/code&gt; instead of launching &lt;code&gt;runsnakerun&lt;/code&gt; from the
+terminal is that OSX restricts some applications’ access to the screen. The
+version of &lt;code&gt;runsnakerun&lt;/code&gt; installed through &lt;code&gt;pip&lt;/code&gt; is not an Apple “framework” and
+therefore cannot access the screen. There are multiple guides explaining how to
 get around this on the Internet, but none of them has worked for me.&lt;/p&gt;
 
 &lt;h3 id=&quot;ipython-extensions&quot;&gt;IPython extensions&lt;/h3&gt;
 
-&lt;p&gt;There are many great tutorials on how to set up and use the required IPython&lt;br /&gt;
+&lt;p&gt;There are many great tutorials on how to set up and use the required IPython
   extensions, such as http://pynash.org/2013/03/06/timing-and-profiling.html .&lt;/p&gt;
 
-&lt;p&gt;These extensions are best used to profile single functions (see below). &lt;code&gt;lprun&lt;/code&gt;&lt;br /&gt;
-and &lt;code&gt;mprun&lt;/code&gt; are of particular interest. Also note &lt;code&gt;prun&lt;/code&gt; prints as a table the&lt;br /&gt;
-same information that &lt;code&gt;snakeviz&lt;/code&gt;/&lt;code&gt;runsnakerun&lt;/code&gt; visualises. Personally I find&lt;br /&gt;
+&lt;p&gt;These extensions are best used to profile single functions (see below). &lt;code&gt;lprun&lt;/code&gt;
+and &lt;code&gt;mprun&lt;/code&gt; are of particular interest. Also note &lt;code&gt;prun&lt;/code&gt; prints as a table the
+same information that &lt;code&gt;snakeviz&lt;/code&gt;/&lt;code&gt;runsnakerun&lt;/code&gt; visualises. Personally I find
 the visualisation much more useful.&lt;/p&gt;
 
 &lt;h2 id=&quot;profiling-the-entire-application&quot;&gt;Profiling the entire application&lt;/h2&gt;
@@ -238,28 +238,28 @@ the visualisation much more useful.&lt;/p&gt;
 python -m cProfile -o out.prof mycode.py
 &lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;This creates a file called &lt;code&gt;out.prof&lt;/code&gt;, which can be visualised using &lt;code&gt;snakeviz&lt;/code&gt;&lt;br /&gt;
+&lt;p&gt;This creates a file called &lt;code&gt;out.prof&lt;/code&gt;, which can be visualised using &lt;code&gt;snakeviz&lt;/code&gt;
 or &lt;code&gt;runsnakerun&lt;/code&gt;. The visualisation might like this:&lt;/p&gt;
 
 &lt;!-- ![Image](https://dl.dropboxusercontent.com/u/20043416/runsnake.png) --&gt;
 &lt;p&gt;&lt;img src=&quot;http://mbatchkarov.github.io/assets/images/runsnake.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The top left corner of that image can be read as&lt;br /&gt;
- - function &lt;code&gt;_count_vocab&lt;/code&gt; took a total of 1.6s&lt;br /&gt;
- - 0.6s of which were spent in &lt;code&gt;__contains__&lt;/code&gt; (not visible in the image, you&lt;br /&gt;
-   need to hover over the box in &lt;code&gt;runsnakerun&lt;/code&gt;)&lt;br /&gt;
+&lt;p&gt;The top left corner of that image can be read as
+ - function &lt;code&gt;_count_vocab&lt;/code&gt; took a total of 1.6s
+ - 0.6s of which were spent in &lt;code&gt;__contains__&lt;/code&gt; (not visible in the image, you
+   need to hover over the box in &lt;code&gt;runsnakerun&lt;/code&gt;)
  - 0.2s of which were spent in &lt;code&gt;__my_feature_extractor__&lt;/code&gt;, etc&lt;/p&gt;
 
 &lt;p&gt;This technique can be used to find out which functions take a long time.&lt;/p&gt;
 
 &lt;h2 id=&quot;profiling-functions&quot;&gt;Profiling functions&lt;/h2&gt;
 
-&lt;p&gt;Having set up the required IPython extensions and identified bottleneck functions,&lt;br /&gt;
-we can profile and incrementally optimise these. Let’s illustrate this with a real&lt;br /&gt;
+&lt;p&gt;Having set up the required IPython extensions and identified bottleneck functions,
+we can profile and incrementally optimise these. Let’s illustrate this with a real
 example I was recently working on.&lt;/p&gt;
 
-&lt;p&gt;I have a function called &lt;code&gt;calculate_log_odds&lt;/code&gt;, which does something rather&lt;br /&gt;
-simple but seems to take a lot of time. To profile it line by line, I ran the&lt;br /&gt;
+&lt;p&gt;I have a function called &lt;code&gt;calculate_log_odds&lt;/code&gt;, which does something rather
+simple but seems to take a lot of time. To profile it line by line, I ran the
 following command in IPython&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;# get some data to run the function with
@@ -292,8 +292,8 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Most of the time is spent on line 9, where I am using the Python &lt;code&gt;sum&lt;/code&gt; function&lt;br /&gt;
-to add up a &lt;code&gt;numpy&lt;/code&gt; array. This can be made much faster by using the appropriate&lt;br /&gt;
+&lt;p&gt;Most of the time is spent on line 9, where I am using the Python &lt;code&gt;sum&lt;/code&gt; function
+to add up a &lt;code&gt;numpy&lt;/code&gt; array. This can be made much faster by using the appropriate
 numpy function:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;Function: calculate_log_odds2 at line 16
@@ -316,9 +316,9 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Note the running time has gone down from 2.3s to 1.5s. Now the bottleneck of the&lt;br /&gt;
-function seems to be at line 21, where I slice a sparse matrix and unnecessarily&lt;br /&gt;
-convert to it a dense one. After a few more iterations of 1) find bottleneck line, and 2) correct line, I&lt;br /&gt;
+&lt;p&gt;Note the running time has gone down from 2.3s to 1.5s. Now the bottleneck of the
+function seems to be at line 21, where I slice a sparse matrix and unnecessarily
+convert to it a dense one. After a few more iterations of 1) find bottleneck line, and 2) correct line, I
 arrived at the following:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;Total time: 0.058181 s
@@ -339,15 +339,15 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     67         1            1      1.0      0.0      return log_odds
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The running time is now 0.05 seconds, or a speedup of ~50x. The bottleneck&lt;br /&gt;
-operation is now entirely done on &lt;code&gt;numpy&lt;/code&gt; arrays, so there are no more&lt;br /&gt;
+&lt;p&gt;The running time is now 0.05 seconds, or a speedup of ~50x. The bottleneck
+operation is now entirely done on &lt;code&gt;numpy&lt;/code&gt; arrays, so there are no more
 low-hanging fruit.&lt;/p&gt;
 
 &lt;h4 id=&quot;notes&quot;&gt;Notes&lt;/h4&gt;
 &lt;ul&gt;
-  &lt;li&gt;Having unit tests for the functions that you are optimising is essential&lt;br /&gt;
+  &lt;li&gt;Having unit tests for the functions that you are optimising is essential
 to making sure nothing gets broken.&lt;/li&gt;
-  &lt;li&gt;Functions to be profiled line by line cannot be typed into the interactive shell&lt;br /&gt;
+  &lt;li&gt;Functions to be profiled line by line cannot be typed into the interactive shell
 and  must be imported from a file on disk&lt;/li&gt;
 &lt;/ul&gt;
 </description>
