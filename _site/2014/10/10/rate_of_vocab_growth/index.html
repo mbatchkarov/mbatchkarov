@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Blog</title>
+    <title>An exploration of scipy sparse matrices</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="Miroslav Batchkarov's webspace">
-    <link rel="canonical" href="http://mbatchkarov.github.io/blog/">
+    <link rel="canonical" href="http://mbatchkarov.github.io/2014/10/10/rate_of_vocab_growth/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -73,43 +73,119 @@
       <div class="post">
 
   <header class="post-header">
-    <h1>Blog</h1>
+    <h1>An exploration of scipy sparse matrices</h1>
+    <p class="meta">Oct 10, 2014</p>
   </header>
 
   <article class="post-content">
-  <div class="home">
-
-  <h1>Posts</h1>
-
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Oct 10, 2014</span>
-        <a class="post-link" href="/2014/10/10/rate_of_vocab_growth/">An exploration of scipy sparse matrices</a>
-        <p>My colleague <a href="https://github.com/mattilyra">Matti Lyra</a> recently faced an<br />
+  <p>My colleague <a href="https://github.com/mattilyra">Matti Lyra</a> recently faced an<br />
 interesting computational problem.  He wanted to see how quickly a stream of<br />
 temporaly-ordered documents evolves, and he chose to do it by looking at how<br />
 often new words appear in the steam. This post is about how to do this<br />
 efficiently in Python.</p>
 
+<p>More formally, the problem is: given a <a href="http://en.wikipedia.org/wiki/Document-term_matrix">term-document<br />
+matrix</a> (stored as a
+<code>scipy.sparse.csc_matrix</code>), find how many new terms each document introduces as<br />
+efficiently as possible. Here is what we came up with.</p>
 
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 14, 2014</span>
-        <a class="post-link" href="/2014/07/14/profiling-python/">Profiling Python</a>
-        <p>This article explains the basics of profiling Python code. The hardest part is<br />
-installing all the great tools that make it trivial to find the bottleneck in<br />
-your code.</p>
+<p>First let’s generate some plausibly-looking (sparse) matrix to play with.</p>
 
+<pre><code>import numpy as np
+from scipy.sparse import csc_matrix
 
-      </li>
-    
-  </ul>
+np.random.seed = 0
+mat = csc_matrix(np.random.rand(10, 12)&gt;0.7, dtype=int)
+mat[1, 0] = 2 # add some variety to the matrix
+mat[0, 1] = 3
+print(mat.A)
 
-  <p class="rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a></p>
+[[0 3 1 1 1 0 0 0 1 0 1 0]
+ [2 0 1 1 0 0 0 0 0 1 1 1]
+ [1 0 0 0 0 1 1 1 0 0 0 0]
+ [0 1 0 0 1 0 0 0 0 1 1 0]
+ [1 1 0 0 1 0 1 0 0 0 0 1]
+ [0 0 1 0 0 0 1 0 0 0 0 0]
+ [0 0 1 0 0 0 1 0 1 1 0 1]
+ [0 1 0 1 0 1 0 0 0 0 1 0]
+ [0 0 0 1 0 0 1 0 1 0 1 1]
+ [0 0 0 0 0 0 1 0 1 1 0 1]]
+</code></pre>
 
-</div>
+<p>The (sparse) matrix is stored as three dense arrays, <code>data</code>, <code>indices</code> and
+<code>indptr</code>. <code>data</code> contains the non-zero values of the matrix, in the order in<br />
+which they would be encountered if we walked along the columns top to bottom and<br />
+left to right. If this were a <code>csr</code> matrix, the walk would have been along the<br />
+rows.</p>
+
+<pre><code>mat.data[:10]
+array([2, 1, 1, 3, 1, 1, 1, 1, 1, 1])
+</code></pre>
+
+<p>These numbers correspond to the non-zero values we would encounter if we walked<br />
+along the columns of the matrix. Note column boundaries are not marked- this is<br />
+what <code>indptr</code> is for. <code>indptr[i]</code> tell us where the <code>i</code>-th columns begins. For<br />
+the matrix above, we have</p>
+
+<pre><code>mat.indptr[:10] # start and end index of each column in the data array
+array([ 0,  3,  7, 11, 15, 18, 20, 26, 27, 31], dtype=int32)
+</code></pre>
+
+<p>So the first column starts at position <code>0</code> and runs until position <code>3</code><br />
+(exclusive), the second columns starts at position <code>3</code> and runs until position
+<code>7</code>, etc. Here are the non-zero values stored in the first and second column.</p>
+
+<pre><code>print(mat.data[mat.indptr[0]:mat.indptr[1]])
+print(mat.data[mat.indptr[1]:mat.indptr[2]])
+
+[2 1 1]
+[3 1 1 1]
+</code></pre>
+
+<p>What is still missing is what row these values should go in. This is stored in
+<code>mat.indices</code>. We can index it similarty to how we index <code>mat.indptr</code>. To get<br />
+the rows in the first column where the non-zero values go, we would do this:</p>
+
+<pre><code>print(mat.indices[:10]) # position of the data in a given row
+print(mat.indices[mat.indptr[0]:mat.indptr[1]])
+
+[1 2 4 0 3 4 7 0 1 5]
+[1 2 4]
+</code></pre>
+
+<p>i.e. the non-zero rows in the first column are at positions 1, 2 and 4.</p>
+
+<p>Let’s get back to our original problem of finding how many new terms appear in<br />
+each document. First, we want to find when (in what document) a term first<br />
+appears, i.e. the position of the first non-zero row in each column.<br />
+Fortunately, the <code>scipy.sparse.csc</code> format makes that very easy:</p>
+
+<pre><code>first_nonzero_row = mat.indices[mat.indptr[:-1]]
+first_nonzero_row
+array([1, 0, 0, 0, 0, 2, 2, 2, 0, 1, 0, 1], dtype=int32)
+</code></pre>
+
+<p>Now that we know when words first appear, we want to find how many words appear<br />
+for the first time in each document:</p>
+
+<pre><code>new_cols_per_row = np.bincount(first_nonzero_row, minlength=mat.shape[0])
+print(new_cols_per_row)
+[6 3 3 0 0 0 0 0 0 0]
+</code></pre>
+
+<p>And there you have it- <code>new_cols_per_row[i]</code> corresponds to how many new terms<br />
+appeared in the <code>i</code>-th document.</p>
+
+<p>One trick we missed in our original implementation is the <code>minlength</code> parameter<br />
+to <code>bincount</code>. Without it <code>numpy</code> will get rid of bins (i.e. rows) with zero new<br />
+features, and the result will be smaller than what we would expect:</p>
+
+<pre><code>np.bincount(first_nonzero_row)
+array([6, 3, 3])
+</code></pre>
+
+<p>In the real text streams Matti works with, we didn’t find this to be a problem,<br />
+i.e. every document had at least one new term.</p>
 
   </article>
 
