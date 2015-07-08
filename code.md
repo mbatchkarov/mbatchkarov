@@ -11,6 +11,7 @@ permalink: /code/
  - [US address parser](https://github.com/datamade/usaddress) (2014)- a statistical parser for US addresses
  - [RCaller](https://code.google.com/p/rcaller/) (2011)- calling R code from Java
  - [DISSECT](https://github.com/composes-toolkit/dissect) (2014)- a toolkit for distributional compositional semantics. I ported it to Python 3 and simplified the code base a bit.
+ - [qsutils](https://github.com/mbatchkarov/qsutils)- a script for processing the output of Sun Grid Engine's `qstat` command. Useful when running lots of grid jobs. Also lets you throttle jobs or move to a different queue.
 
 #### Less known useful software others have written
 - [Sikuli script](http://www.sikuli.org)- automatic UI actions
