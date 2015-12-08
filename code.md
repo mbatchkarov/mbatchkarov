@@ -4,10 +4,11 @@ title: Code
 permalink: /code/
 ---
 
-####
 Most of my time is spend doing data science work in Python; I also use Java if I have to. My preferred toolkit includes `numpy`, `scikit-learn`, `gensim` and `spaCy`. I've written Matlab and C in the past and occasionally write web-based front ends with Django, JavaScript (Angular), CSS and HTML. I keep meaning to learn R.
 
-#### Open-source software I have contributed to (in order of proportion of code written by me)
+#### Open-source 
+In order of proportion of code written by me:
+
  - [DiscoUtils](https://github.com/mbatchkarov/DiscoUtils), [dc_evaluation](https://github.com/mbatchkarov/dc_evaluation), [vector_builder](https://github.com/mbatchkarov/vector_builder) (from 2013)- a collection of tools for working with distributional semantic models. I use this in my doctoral work.
  - [Critical difference](https://github.com/mbatchkarov/critical_difference) (2014)- a tool for visualising the results of multiple tests for statistical significance. See website for examples.
  - [word2vec-inversion](https://github.com/mbatchkarov/word2vec-inversion)- investigating a recent state-of-the-art document classification method using distributional semantic information
