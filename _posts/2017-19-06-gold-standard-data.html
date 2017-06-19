@@ -13,25 +13,23 @@ tags: [python]
 <h3 id="case-study-1-word-embeddings">Case study 1: word embeddings</h3>
 <p>Words  vectors have become popular in recent years as they can be built without supervision and can capture complex semantic relations well. For example, adding the vectors of <code>king</code> and <code>woman</code> and subtracting the vector of <code>man</code> yields a vector that is very close to that of <code>queen</code>.</p>
 <p>Algorithms for training word vectors have been evaluated by correlating the &quot;similarity&quot; of word pairs, as predicted by a model, to those provided by a human judge. A typical data set consists of word pairs and a similarity score, e.g. <code>cat, dog, 80%</code> and <code>cat, purple, 21%</code>. A model is considered good if it assigns high scores to word pairs that are scored highly by a human. Let us consider what it takes to label such a data set and what can go wrong in the process.</p>
-<blockquote>
+<h3>
 	<p>Is the task clearly defined? </p>
-</blockquote>
+</h3>
 <p>What exactly is word similarity? We all have an intuitive understanding, but a lot of corner cases are hard to pin down. What makes the words <code>cat</code> and <code>dog</code> similar? Is it because they are both animals? What about topically related words, such as <code>rice</code> and <code>cooking</code>? What about antonyms, e.g. <code>big</code> and <code>small</code>? Human annotators need clear and unambiguous description of what is required of them, otherwise data quality will be
 	poor. For instance, the similarity scores provided by 13 annotators for the pair <code>tiger–cat</code> range from <code>50%</code> to <code>90%</code> in WordSim353, a data set often used to rank word similarity. Click <a href="http://sro.sussex.ac.uk/62044/1/acl2016.pdf">here</a> for a more detailed analysis of this issue. </p> 
 
-	<blockquote>
-		<p>Is the task easy for humans to do?</p>
-	</blockquote>
+	<h3> Is the task easy for humans to do?	</h3>
 	<p>Even with clear instructions, some tasks are inherently subjective. It is unlikely that every person you ask will provide the same similarity score for <code>cat</code> and <code>dog</code>, or will interpret a written sarcastic comment the same way out of context. If humans cannot agree what the right answer is for a given input, how can a model ever do well? Of course, data scientists can take steps to address those issues. First, make sure that you have clear written annotator guidelines, even if you plan to do the annotation yourself. Ask others to read the guidelines and explain how they interpret your instructions.</p>
 	<p>Second, do not be afraid to change the task to make it easier. If your use case allows it, make the task as simple as possible for the annotators. Ask yourself if it is business-critical to get fine-grained labels or if a coarser-grained (and therefore easier) annotation schema would suffice.</p>
-	<blockquote>
+	<h3>
 		<p>Do you have quality control in place?</p>
-	</blockquote>
+	</h3>
 	<p>Not having a mechanism for identifying annotator errors or consistently under-performing annotators is perhaps the most common error in data labeling. There are many viable ways to do quality control - the key is to ensure at least one of them is in use. A common approach is to measure if different annotators agree with one another or with a known gold-standard - see next case study. Conflicts may be resolved by an independent adjudicator.</p>
 	<p>Ideally, quality control should be an automated process that runs continuously. Remember that systematic errors may be a sign of unclear guidelines. Talk to your annotators to understand the source of the problem. Be prepared to discard your first data set.</p>
-	<blockquote>
+	<h3>
 		<p>How much data can you hope to get?</p>
-	</blockquote>
+	</h3>
 	<p>A supervised learning model may require a significant amount of labeled data to perform well. However, obtaining this much data may be problematic for a number of reasons:</p>
 	<ul>
 		<li>Human annotators are expensive, even on crowd sourcing platforms that systematically underpay. </li>
@@ -49,28 +47,28 @@ tags: [python]
 
 <p>
 	This presents a different set of challenges for a data scientist.</p>
-	<blockquote>
+	<h3>
 		<p>Do you need an expert annotator?</p>
-	</blockquote>
+	</h3>
 	<p>Most doctors&#39; notes are impossible to decode for a layperson. Annotation therefore has to be done by a trained doctor, but most doctors prefer to practice medicine rather than label data. The typical doctor is also not an expert in machine learning or linguistics (and vice versa), so they may not have the same vocabulary. This makes it harder to provide a clear task definition.</p>
-	<blockquote>
+	<h3>
 		<p>Can you measure inter-annotator agreement?</p>
-	</blockquote>
+	</h3>
 	<p>Can you quantify the degree to which annotators agree? In the case of word similarity, this is as simple as comparing numerical scores. This gets trickier when the annotation unit has complex structure (e.g. it is a phrase). For example, in the sentence <code>burning neck pain </code> one annotator may pick up the first two words as a symptom, while another may pick up the last two words, and a third may not mark any symptoms. </p>
 
-	<blockquote>
+	<h3>
 		<p>Tooling</p>
-	</blockquote>
+	</h3>
 	<p>Do you need specialist software to capture and store data? Depending on the complexity, can you write something yourself or do you have to assemble a team? Will the tool be intuitive and easy to use, or is it confusing your annotators? In our medical example, the tooling is getting much better and allows annotators to be very productive. Several years ago tools such as <a href="http://brat.nlplab.org">BRAT</a> were less mature and took a long time to set up, whereas now they run out of the box.</p> 
 
-	<p>Further issues arise where hardware is involved (e.g. internet-of-things or industrial machines). These include writing bespoke software for the device to capture data, transmitting data to a server reliably and storing potentially massive amount of data that machines generate. </p>
+	<p>Further issues arise where hardware is involved, e.g. in internet-of-things or industrial applications. These include writing bespoke software for the device to capture data, transmitting it to a server reliably (and securely!) and storing potentially massive amount of data that machines generate. </p>
 
-	<blockquote>
+	<h3>
 		<p>People issues</p>
-	</blockquote>
+	</h3>
 	<p>Many data science talks focus on the technical aspects of data gathering, with people issues often taking a back seat. However, a single well-trained and reliable annotator producing large amounts of labeled data can often contribute more to the success of a project than a team of programmers. It is therefore important to build and maintain a good working relationship with the annotators. This is much easier if they are located near you. Be prepared to deal with small issues such as
 		annotators not showing up for sessions, or taking two-week breaks between sessions. The more time passes between sessions, the more the annotators will need re-training. This is the main reason why quality control should be run continuously.</p>
-		<p>If you are using a crowd sourcing platform, beware of click farms. The academic literature has some fantastic resources on the subject.</p>
+		<p>If you are using a crowd sourcing platform, beware of click farms. The academic literature has some fantastic resources on the subject- see references.</p>
 	</p>
 </p>
 
@@ -83,7 +81,7 @@ tags: [python]
 </ul>
 
 <h3 id="references-and-notes">References and notes</h3>
-<p>The first case study is based on <a href="http://sro.sussex.ac.uk/62044/1/acl2016.pdf">this paper</a>, which is in turn based on my PhD work. The second case study is based on the PhD work of my lab mate <a href="https://www.linkedin.com/in/savkov/">Aleksandar Savkov</a>. References:</p>
+<p>The first case study is based on <a href="http://sro.sussex.ac.uk/62044/1/acl2016.pdf">this paper</a>, which is in turn based on my PhD work. The second case study is inspired by the PhD work of my lab mate <a href="https://www.linkedin.com/in/savkov/">Aleksandar Savkov</a>. </p>
 
 <ul>
 	<li>Herbert Rubenstein and John Goodenough. 1965. Contextual correlates of synonymy. Communications of the ACM 8(10):627-633.</li>
@@ -93,6 +91,6 @@ tags: [python]
 	<li> <a href="http://esslli2016.unibz.it/?page_id=346"> Chris Bieman. Crowdsourcing Linguistic Datasets</a> </li>
 	<li> <a href="http://crowdsourcing-class.org"> Chris Carlison-Burch et al. Crowdsourcing and Human Computation Class</a> </li>
 	<li> Rion Snow, Brendan O'Connor, Daniel Jurafsky, and Andrew Y. Ng. 2008. Cheap and fast- but is it good?: evaluating non-expert annotations for natural language tasks. </li>
-	<li> Gadiraju, U., Kawase, R., Dietze, S., Demartini, G. (2015): Understanding Malicious Behaviour in Crowdsourcing Platforms: The Case of Online Surveys. </li>
+	<li> Gadiraju, U., Kawase, R., Dietze, S., Demartini, G. 2015. Understanding Malicious Behaviour in Crowdsourcing Platforms: The Case of Online Surveys. </li>
 </ul>
 
