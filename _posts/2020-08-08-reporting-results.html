@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Reporting results in machine learning"
-date:   2020-08-08 14:00:00
+date:   2020-08-08 10:00:00
+excerpt: <p>A look  at some common pitfalls when reporing experimental results in machine learning. We start from common sins like evaluating on the training data and build our way up to a more sophisticated statistical analysis.</p>
 tags: [python, machine learning]
 ---
 
@@ -11782,7 +11783,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Reporting-results-in-machine-learning">Reporting results in machine learning<a class="anchor-link" href="#Reporting-results-in-machine-learning">&#182;</a></h1><p>We'd like to take a look at how we as machine learning practitioners evaluate our models and especially how we compare our work to that of others. This is broad area with a lot of tricky corner cases. If you are in academia, you might want to compare your new idea to the current state-of-the-art. If you are in business, you might be trying out N models and looking for the most accurate one to commercialise. In both cases, you will need to evaluate competing models correctly in order to be sure you've got the best one. This post will show some common pitfalls.</p>
+<p>I'd like to take a look at how we as machine learning practitioners evaluate our models and especially how we compare our work to that of others. This is broad area with a lot of tricky corner cases. If you are in academia, you might want to compare your new idea to the current state-of-the-art. If you are in business, you might be trying out N models and looking for the most accurate one to commercialise. In both cases, you will need to evaluate competing models correctly in order to be sure you've got the best one. This post will show some common pitfalls.</p>
 <p>To keep things simple, we'll pick a binary classification task with an approximately uniform class distribution. We'll train basic models only, without trying to learn anything about the data. We won't clean up the data in any way and we'll use the most basic performance measure (accuracy score).</p>
 <p><em>The aim is to focus on how we report our results, not how we get to these results</em>. We'll start with an obvious  but downright incorrect evaluation method and we'll iteratively improve on it until we get to something reasonable.</p>
 <p>First let's import some helpers and load a sample dataset. For the purposes of this post we don't need to know anything about the data.</p>
