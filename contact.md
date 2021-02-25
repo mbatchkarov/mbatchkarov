@@ -4,12 +4,6 @@ title: Contact
 permalink: /contact/
 ---
 
-## Address
-Chichester 1, Room 214
-University of Sussex,
-Brighton, East Sussex
-United Kingdom
-BN1 9QJ
+## LinkedIn
 
-## Telephone
-+441273872956
+Contact me on [LinkedIn](href="https://uk.linkedin.com/in/mbatchkarov)
